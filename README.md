@@ -2,9 +2,12 @@
 
 This project experiments with using an LLM to generate Lean 4 proofs and verify them with Lean/mathlib.
 
+The agent sends a theorem prompt to GPT, writes the output to Myproject/Basic.lean, runs lake build, and if it fails, feeds the compiler error back to GPT to fix — up to MAX_RETRIES times.
+GPT-4.1-mini → Lean code → lake build → [error?] → GPT fix → repeat
+This mirrors the core idea from Numina-Lean-Agent: use compiler feedback to iteratively correct proofs rather than hoping the first generation is correct.
+
 ## Files
 - `run_agent.py` — sends a prompt to OpenAI, writes generated Lean code to `Myproject/Basic.lean`, and runs `lake build`
-- `ask_openai.py` — helper script for generating proof plans / blueprint ideas
 - `Myproject/Basic.lean` — main Lean file being tested
 - `Myproject.lean` — imports `Myproject.Basic`
 - `lakefile.toml` / `lake-manifest.json` / `lean-toolchain` — Lean project configuration
