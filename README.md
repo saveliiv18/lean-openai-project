@@ -45,9 +45,13 @@ The project is currently being used to test whether LLM-generated Lean proofs ca
 ## Example
 
 Prompt:
-"Prove that n + 0 = n"
-
+--- Attempt 1/5 ---
 Generated Lean code:
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
 
-theorem add_zero_example (n : ℕ) : n + 0 = n := by
-  simp
+theorem ...
+
+Running lake build...
+
+Proof verified on attempt 1!
