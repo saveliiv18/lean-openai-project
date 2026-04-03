@@ -1,13 +1,37 @@
-# myproject
+# Myproject
 
-## GitHub configuration
+This project experiments with using an LLM to generate Lean 4 proofs and verify them with Lean/mathlib.
 
-To set up your new GitHub repository, follow these steps:
+## Files
+- `run_agent.py` — sends a prompt to OpenAI, writes generated Lean code to `Myproject/Basic.lean`, and runs `lake build`
+- `ask_openai.py` — helper script for generating proof plans / blueprint ideas
+- `Myproject/Basic.lean` — main Lean file being tested
+- `Myproject.lean` — imports `Myproject.Basic`
+- `lakefile.toml` / `lake-manifest.json` / `lean-toolchain` — Lean project configuration
 
-* Under your repository name, click **Settings**.
-* In the **Actions** section of the sidebar, click "General".
-* Check the box **Allow GitHub Actions to create and approve pull requests**.
-* Click the **Pages** section of the settings sidebar.
-* In the **Source** dropdown menu, select "GitHub Actions".
+## Setup
+Make sure the following are installed:
+- Lean 4
+- Lake
+- mathlib dependencies
 
-After following the steps above, you can remove this section from the README file.
+Then run:
+
+```bash
+lake update
+lake build
+```
+
+
+#Usage
+
+To generate and test Lean code:
+
+Run:
+```bash
+python3 run_agent.py
+```
+
+Current goal:
+The project is currently being used to test whether LLM-generated Lean proofs can verify graph-theoretic and arithmetic lemmas step by step.
+
