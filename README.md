@@ -13,10 +13,12 @@ This mirrors the core idea from Numina-Lean-Agent: use compiler feedback to iter
 - `lakefile.toml` / `lake-manifest.json` / `lean-toolchain` — Lean project configuration
 
 ## Setup
-Make sure the following are installed:
-- Lean 4
-- Lake
-- mathlib dependencies
+Requires:
+
+Lean 4 + Lake
+mathlib (v4.28.0)
+Python 3 + openai package (pip install openai)
+OPENAI_API_KEY set in environment
 
 Then run:
 
