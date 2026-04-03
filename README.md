@@ -35,3 +35,14 @@ python3 run_agent.py
 Current goal:
 The project is currently being used to test whether LLM-generated Lean proofs can verify graph-theoretic and arithmetic lemmas step by step.
 
+
+
+## Example
+
+Prompt:
+"Prove that n + 0 = n"
+
+Generated Lean code:
+
+theorem add_zero_example (n : ℕ) : n + 0 = n := by
+  simp
