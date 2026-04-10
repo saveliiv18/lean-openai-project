@@ -40,7 +40,15 @@ python3 run_agent.py
 Current goal:
 The project is currently being used to test whether LLM-generated Lean proofs can verify graph-theoretic and arithmetic lemmas step by step.
 
+### NOTE: 
+We got a selection of the following OpenAI models to use to prove lemmas with their pros and cons listed:
 
+-gpt-4.1-mini:
+Fast and cheap. Good for simple, well-known theorems where the proof strategy is obvious. Fails on anything requiring creative tactic selection or multi-step reasoning. Hallucinates lemma names frequently.
+-o4-mini:
+Best balance for this use case. Slower than 4.1-mini but reasons through proof structure before generating, so it hallucinates far less and needs fewer retries. Good for medium-hard theorems. Costs more per call but saves money overall by not burning through retries. Recommended default for Lean proving.
+-o3:
+Strongest reasoning of the three. Will attempt and often solve theorems that o4-mini gets stuck on. Very slow (can take minutes per attempt) and expensive. Only worth it for theorems where o4-mini is consistently failing after all retries.
 
 ## Example
 

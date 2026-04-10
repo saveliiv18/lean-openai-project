@@ -1,9 +1,9 @@
 # ============================================================
 # run_agent.py
 #
-# This script uses GPT-4.1-mini to generate a Lean 4 proof,
+# This script uses the chosen OpenAI model to generate a Lean 4 proof,
 # then verifies it by running `lake build`. If the build fails,
-# it feeds the Lean compiler error back to GPT so it can fix
+# it feeds the Lean compiler error back to the AI so it can fix
 # its own code. This retry loop repeats up to MAX_RETRIES times.
 #
 # This mirrors the core idea from the Numina-Lean-Agent paper:
@@ -14,6 +14,9 @@
 import subprocess
 import re
 from openai import OpenAI
+
+models = ["gpt-4.1-mini", "o3", "o4-mini"]
+AI_model = models[0]  # default to gpt-4.1-mini, but we can switch for testing
 
 client = OpenAI()
 
@@ -109,14 +112,17 @@ def strip_markdown(code: str) -> str:
 
 
 def generate_lean(prompt: str) -> str:
-    """
-    Sends a prompt to GPT-4.1-mini and returns the generated
-    Lean code as a clean string (markdown fences removed).
-    """
+    global AI_model
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model=AI_model,
         input=prompt
     )
+
+    """
+    Sends a prompt to the chosen openai model and returns the generated
+    Lean code as a clean string (markdown fences removed).
+    """
+    
     return strip_markdown(response.output_text)
 
 
@@ -146,7 +152,9 @@ def run_lean_build() -> tuple[bool, str, str]:
 
 def main():
     print("=" * 60)
-    print("Lean Proof Agent — GPT-4.1-mini + Retry Loop")
+    switch_model()  # allow user to switch models at the start
+    print("=" * 60)
+    print("Lean Proof Agent — Chosen OpenAI Model + Retry Loop")
     print("=" * 60)
 
     lean_code = None   # holds the most recently generated Lean code
@@ -205,6 +213,22 @@ def main():
         print(lean_code)
         print("\nLast error:")
         print(last_error)
+
+# switch between openai models for testing:
+def switch_model():
+    global AI_model
+    while True:
+        print("Available models: ")
+        for i in models:
+            print(i + ", ", end="")
+        print("\nEnter model name to switch:")
+        choice = input().strip()
+        if choice in models:
+            AI_model = choice
+            print(f"Switched to model: {AI_model}")
+            break
+        else:
+            print(f"Invalid choice. Try Again.")
 
 
 # Only run main() if this script is executed directly,
